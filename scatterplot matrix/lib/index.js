@@ -41,7 +41,9 @@ d3.csv('./lib/penguins.csv', d3.autoType).then((d) => {
     // .attr('height', height)
     .attr("viewBox", `${-padding} 0 ${width} ${width}`)
     .style("max-width", "100%")
-    .style("height", "auto");
+    .style("height", "auto")
+    .append('g')
+    .attr("transform", 'translate(20, 0)')
 
     svg.append("g")
     .call(xAxis);
