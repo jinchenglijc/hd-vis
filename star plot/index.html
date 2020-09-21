@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link type="text/css" rel="stylesheet" href="./lib/style.css" />
+    <style>
+      body {
+        width: 960px;
+        margin: auto;
+        font-family: Arial;
+      }
+      #vis {
+        margin: 40px 0;
+      }
+      .wrapper {
+        position: relative;
+        display: inline-block;
+      }
+      .chart {
+        margin-bottom: 40px;
+      }
+      .star-title {
+        font-size: 14px;
+      }
+      .star-label {
+        font-size: 11px;
+        pointer-events: none;
+      }
+      .star-origin {
+        fill: #333;
+      }
+      .star-axis {
+        stroke: #ccc;
+        stroke-width: 2px;
+        stroke-dasharray: 4 5;
+      }
+      .star-path {
+        stroke: #444;
+        stroke-width: 2px;
+        fill: #709cb1;
+        fill-opacity: 0.6;
+      }
+      .star-interaction {
+        opacity: 0;
+      }
+
+      .interaction {
+        pointer-events: none;
+      }
+      .interaction.label {
+        position: absolute;
+        font-size: 11px;
+        text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 #fff, -1px 0 #fff;
+      }
+      .interaction.circle {
+        fill: #444;
+        fill-opacity: 0.6;
+        stroke: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vis"></div>
+  </body>
+
+  <body>
+    <script type="text/javascript"></script>
+    <script src="./lib/dependencies/d3.min.js"></script>
+    <script src="./lib/dependencies/d3-starPlot.js"></script>
+    <script src="./lib/dependencies/jquery.min.js"></script>
+    <script src="./lib/data.js"></script>
+    <!-- <script src="./lib/handler.js"></script> -->
+    <!-- <script src="./lib/legend.js"></script> -->
+    <script src="./lib/index.js"></script>
+    <script type="text/javascript"></script>
+  </body>
+</html>
