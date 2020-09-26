@@ -1,54 +1,211 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link type="text/css" rel="stylesheet" href="./lib/style.css" />
-    <style>
-      svg {
-        font: 10px sans-serif;
-      }
 
-      .background path {
-        fill: none;
-        stroke: #ddd;
-        shape-rendering: crispEdges;
-      }
+<head>
+	<meta charset="utf-8">
+	<script src="./lib/d3.min.js"></script>
+  <script src="./lib/lasso.min.js"></script>
+	<script src="./lib/jquery-3.3.1.min.js"></script>
+	<script src="./lib/fontawesome-all.min.js"></script>
+	<script src="./lib/numeric-1.2.6.min.js"></script>
+	<!-- <script src="./lib/data.js"></script> -->
+	<script src="./lib/place.js"></script>
+  <!-- <script src="./lib/glyphSPLOMs.js"></script> -->
+	<script src="./lib/handler.js"></script>
+</head>
 
-      .foreground path {
-        fill: none;
-        stroke: steelblue;
-      }
+<style>
+#vis {
+    /*display: flex;*/
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    /*flex-direction: column;*/
+}
 
-      .brush .extent {
-        fill-opacity: 0.3;
-        stroke: #fff;
-        shape-rendering: crispEdges;
-      }
+#PCPs {
+	height: 50%;
+	width: 100%;
+	position: relative;
+  display: inline-block;
+}
 
-      .axis line,
-      .axis path {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
+#toolbar {
+	width: 100%;
+    height: 2rem;
+    border-top: 1px solid #cccccc;
+    font-size: 0.5rem;
+    margin-left: 1.0rem;
+    margin-right: 1.0rem;
+    height: 100%;
+    text-align: center;
+}
 
-      .axis text {
-        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-        cursor: move;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="vis"></div>
-  </body>
+.toolbar-center-span {
+    float: none;
+    margin:0 auto;
+    vertical-align: middle;
+    line-height: 2rem;
+}
 
-  <body>
-    <script type="text/javascript"></script>
-    <script src="./lib/dependencies/d3.min.js"></script>
-    <script src="./lib/dependencies/jquery.min.js"></script>
-    <script src="./lib/data.js"></script>
-    <!-- <script src="./lib/handler.js"></script> -->
-    <!-- <script src="./lib/legend.js"></script> -->
-    <script src="./lib/index.js"></script>
-    <script type="text/javascript"></script>
-  </body>
+.btn-group {
+    margin-right:0.5rem;
+}
+
+.config-span:last-of-type {
+    .btn-group{
+      margin-right: 0rem;
+    }
+}
+
+button{
+    background: white;
+    margin: 0 0 0 0;
+    outline:none;
+    padding: 0.15rem 0.15rem 0.1rem 0.15rem;
+    border-color: white;
+    border: 0.05rem solid #ccc;
+    cursor: pointer;
+}
+
+svg {
+	font: 10px sans-serif;
+}
+
+.frame {
+	opacity: 0
+}
+
+.background path {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	cursor: move;
+	fill: black;
+}
+
+circle {
+	fill: black;
+    fill-opacity: 0.7;
+}
+
+.lasso path {
+    stroke: rgb(80,80,80);
+    stroke-width:2px;
+}
+
+.lasso .drawn {
+    fill-opacity:.05 ;
+}
+
+.lasso .loop_close {
+    fill:none;
+    stroke-dasharray: 4,4;
+}
+
+.lasso .origin {
+    fill:#3399FF;
+    fill-opacity:.5;
+}
+
+.not_possible line,
+.not_possible path {
+    fill: none;
+  	stroke: #000;
+  	shape-rendering: crispEdges;
+}
+
+.not_possible text {
+	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	cursor: move;
+	fill: black;
+}
+
+.possible line,
+.possible path {
+    fill: none;
+  	stroke: red;
+  	shape-rendering: crispEdges;
+}
+.possible text {
+	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	cursor: move;
+	fill: red;
+}
+
+.selected line,
+.selected path {
+    fill: none;
+  	stroke: red;
+  	shape-rendering: crispEdges;
+}
+.selected text {
+	text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+	cursor: move;
+	fill: red;
+}
+
+.reseted {
+	text-anchor: start;
+}
+
+.clipRect {
+	fill: white;
+}
+
+.SPLOMsFrame {
+  fill: none;
+  stroke: #aaa;
+}
+
+circle.hidden {
+  fill: #ccc !important;
+}
+</style>
+
+<body>
+	<div id="vis">
+		<div id="PCPs"></div>
+		<!-- <div id="toolbar">
+			<span class="toolbar-center-span">
+				<span class="config-span">
+					<span class="operation-label">AGGREGATION</span>
+					<span class="btn-group" role="group">
+						<button id="leftAggregate">
+							<i class="fas fa-angle-double-left"></i>
+						</button>
+						<button id="rightAggregate">
+							<i class="fas fa-angle-double-right"></i>
+						</button>
+					</span>
+				</span>
+			</span>
+		</div> -->
+	</div>
+	<script src="./lib/index.js"></script>
+	<script type="text/javascript">
+	</script>
+</body>
+
 </html>

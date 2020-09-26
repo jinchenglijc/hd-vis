@@ -1,0 +1,28 @@
+body{
+	margin:0;
+}
+
+
+.frame{
+	fill: none;
+  	stroke: #aaa;
+}
+
+.axis,
+.frame {
+  shape-rendering: crispEdges;
+}
+
+.axis path{
+	stroke: none;
+}
+
+/*.y
+line{
+	x2: 800;
+	opacity: 0.3;
+}*/
+
+circle.hidden {
+  fill: #ccc !important;
+}

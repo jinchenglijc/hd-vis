@@ -10,3 +10,8 @@ body {
   /* height: 100%;
   width: 100%; */
 }
+
+.legend-text {
+  text-anchor: start;
+  font-size: 10px;
+}
